@@ -1,7 +1,33 @@
 import React, { Component } from 'react'
 import { Form, Button } from 'react-bootstrap'
-import { autoFieldList } from '../../utils/constants'
 import PropTypes from 'prop-types'
+
+const gearFieldList = [
+  {
+    name: 'brand',
+    descr: 'Brand',
+  },
+  {
+    name: 'model',
+    descr: 'Model',
+  },
+  {
+    name: 'generation',
+    descr: 'Generation',
+  },
+  {
+    name: 'doors',
+    descr: 'Doors',
+  },
+  {
+    name: 'power',
+    descr: 'Power',
+  },
+  {
+    name: 'fuelTankVolume',
+    descr: 'Fuel tnak volume',
+  },
+];
 
 export default class EditGear extends Component {
   state ={}
@@ -34,7 +60,7 @@ export default class EditGear extends Component {
   }
 
   render () {
-    const fieldList = autoFieldList.map((field) => {
+    const fieldList = gearFieldList.map((field) => {
       return (
         <Form.Group controlId = { field.name }  key = { field.name }>
           <Form.Label>{field.descr}</Form.Label>

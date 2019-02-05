@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Dropdown, Container, Col, Row, Pagination, Card, CardDeck, Form, Button } from 'react-bootstrap'
-import { autoFieldList } from '../../utils/constants'
 import PropTypes from 'prop-types'
 
 const sortDirection = {
@@ -8,16 +7,49 @@ const sortDirection = {
   SORT_DESC: 'desc'
 }
 
-function compareBy (gears, fieldName, direction, gear1, gear2) {
-    const cmp = (gear1, gear2) => gears[gear1][fieldName] < gears[gear2][fieldName] ? -1 : 1
+const gearFieldList = [
+  {
+    name: 'brand',
+    descr: 'Brand',
+    extended: false
+  },
+  {
+    name: 'model',
+    descr: 'Model',
+    extended: false
+  },
+  {
+    name: 'generation',
+    descr: 'Generation',
+    extended: true
+  },
+  {
+    name: 'doors',
+    descr: 'Doors',
+    extended: true
+  },
+  {
+    name: 'power',
+    descr: 'Power',
+    extended: true
+  },
+  {
+    name: 'fuelTankVolume',
+    descr: 'Fuel tnak volume',
+    extended: true
+  },
+];
+
+function compareBy (objs, fieldName) {
+  return (direction) => {
+    const cmp = (obj1, obj2) => objs[obj1][fieldName] < objs[obj2][fieldName] ? -1 : 1
 
     if ( direction === sortDirection.SORT_ASC ) {
-      return (gear1, gear2) => cmp (gear1, gear2)
+      return (obj1, obj2) => cmp (obj1, obj2)
     }
-
-    return (gear1, gear2) => cmp (gear2, gear1)
+    return (obj1, obj2) => cmp (obj2, obj1)
+  }
 }
-
 
 export default class List extends Component {
   state = {
@@ -55,8 +87,9 @@ export default class List extends Component {
     const { sortOrder, searchStr, itemsPerPage, currentPage } = this.state
 
     let gearsIds = Object.keys(gears);
- 
-    gearsIds = sortOrder ? gearsIds.sort(compareBy(gears, 'brand', sortOrder)) : gearsIds
+    const cmpGearsByBrand = compareBy(gears, 'brand')
+
+    gearsIds = sortOrder ? gearsIds.sort(cmpGearsByBrand(sortOrder)) : gearsIds
 
     gearsIds = searchStr ? gearsIds.filter((gearId) => {
       if (gears[gearId].brand.toUpperCase().indexOf(searchStr.toUpperCase()) > -1) {
@@ -66,7 +99,7 @@ export default class List extends Component {
     }) : gearsIds
 
     const itemsCount = gearsIds.length
-    const pagesCount = Math.floor(itemsCount / itemsPerPage)
+    const pagesCount = Math.ceil(itemsCount / itemsPerPage)
 
     const startItem = currentPage * itemsPerPage
     const endItem = startItem + itemsPerPage
@@ -75,7 +108,7 @@ export default class List extends Component {
 
     const list = gearsIds.map((gearId) => {
       const fieldsForList = Object.keys(gears[gearId]).filter((fieldName) => {
-        return !autoFieldList.find((fieldDef) => {
+        return !gearFieldList.find((fieldDef) => {
           return fieldDef.name === fieldName ? true : false
         }).extended
       })
@@ -86,7 +119,7 @@ export default class List extends Component {
               <ul>
                 {   
                   fieldsForList.map((field) => {
-                    const fieldDescr = autoFieldList.find((fieldDef) => {
+                    const fieldDescr = gearFieldList.find((fieldDef) => {
                         return fieldDef.name === field ? true : false
                     }).descr
 
