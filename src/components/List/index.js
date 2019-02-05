@@ -8,6 +8,17 @@ const sortDirection = {
   SORT_DESC: 'desc'
 }
 
+function compareBy (gears, fieldName, direction, gear1, gear2) {
+    const cmp = (gear1, gear2) => gears[gear1][fieldName] < gears[gear2][fieldName] ? -1 : 1
+
+    if ( direction === sortDirection.SORT_ASC ) {
+      return (gear1, gear2) => cmp (gear1, gear2)
+    }
+
+    return (gear1, gear2) => cmp (gear2, gear1)
+}
+
+
 export default class List extends Component {
   state = {
     itemsPerPage: '5',
@@ -18,26 +29,6 @@ export default class List extends Component {
     this.setState({
       sortOrder: eKey
     })
-  }
-
-  sortByBrandAcs = (gearId1, gearId2) => {
-    const { gears } = this.props
-
-    if (gears[gearId1].brand < gears[gearId2].brand) {
-      return -1
-    } else {
-      return 1
-    }
-  }
-
-  sortByBrandDesc = (gearId1, gearId2) => {
-    const { gears } = this.props
-
-    if (gears[gearId1].brand > gears[gearId2].brand) {
-      return -1
-    } else {
-      return 1
-    }
   }
 
   onSearchChangeHandler = (e) => {
@@ -63,26 +54,26 @@ export default class List extends Component {
     const { gears, onGearEdit, onGearDetail } = this.props
     const { sortOrder, searchStr, itemsPerPage, currentPage } = this.state
 
-    const gearsIdSortedArr = sortOrder === sortDirection.SORT_ASC ? Object.keys(gears).sort(this.sortByBrandAcs) :
-               sortOrder === sortDirection.SORT_DESC ? Object.keys(gears).sort(this.sortByBrandDesc) :
-               Object.keys(gears)
+    let gearsIds = Object.keys(gears);
+ 
+    gearsIds = sortOrder ? gearsIds.sort(compareBy(gears, 'brand', sortOrder)) : gearsIds
 
-    const gearsIdSortedAndFilteredArr = searchStr ? gearsIdSortedArr.filter((gearId) => {
+    gearsIds = searchStr ? gearsIds.filter((gearId) => {
       if (gears[gearId].brand.toUpperCase().indexOf(searchStr.toUpperCase()) > -1) {
         return true
       } 
       return false
-    }) : gearsIdSortedArr
+    }) : gearsIds
 
-    const itemsCount = gearsIdSortedAndFilteredArr.length
-    const pagesCount = itemsCount / itemsPerPage
+    const itemsCount = gearsIds.length
+    const pagesCount = Math.floor(itemsCount / itemsPerPage)
 
     const startItem = currentPage * itemsPerPage
     const endItem = startItem + itemsPerPage
 
-    const gearsIdSortedAndFilteredAndPagedArr = gearsIdSortedAndFilteredArr.slice(startItem, endItem)
+    gearsIds = gearsIds.slice(startItem, endItem)
 
-    const list = gearsIdSortedAndFilteredAndPagedArr.map((gearId) => {
+    const list = gearsIds.map((gearId) => {
       const fieldsForList = Object.keys(gears[gearId]).filter((fieldName) => {
         return !autoFieldList.find((fieldDef) => {
           return fieldDef.name === fieldName ? true : false
@@ -100,7 +91,7 @@ export default class List extends Component {
                     }).descr
 
                     return (
-                      <li key = { `gear_${gearId}_${field}` }>{ fieldDescr }: { gears[gearId][field] }</li>
+                      <li key = { `${gearId}_${field}` }>{ fieldDescr }: { gears[gearId][field] }</li>
                     )
                   })
                 }
