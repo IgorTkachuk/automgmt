@@ -30,7 +30,7 @@ const gearFieldList = [
 ];
 
 const DetailGear = (props) => {
-  const { gear, onReturn } = props
+  const { gear, history } = props
   const gearId = Object.keys(gear)[0]
 
   const fieldList = gearFieldList.map((field) => {
@@ -44,7 +44,7 @@ const DetailGear = (props) => {
 
   return (
     <div style = {{ marginLeft: '15px' }}>
-      <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { onReturn }>Back to list</Button>
+      <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { () => history.push('/list')  }>Back to list</Button>
       <ul>
         { fieldList }
       </ul>
@@ -53,8 +53,7 @@ const DetailGear = (props) => {
 }
 
 DetailGear.propTypes = {
-  gear: PropTypes.object.isRequired,
-  onReturn: PropTypes.func.isRequired
+  gear: PropTypes.object.isRequired
 }
 
 export default DetailGear

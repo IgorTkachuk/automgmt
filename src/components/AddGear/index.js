@@ -41,8 +41,10 @@ export default class AddGear extends Component {
   }
 
   formSubmit = (e) => {
+    const { history, onSubmit } = this.props
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    onSubmit(this.state)
+    history.push('/list')
   }
 
   render(){

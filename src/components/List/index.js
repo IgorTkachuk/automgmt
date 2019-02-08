@@ -83,7 +83,7 @@ export default class List extends Component {
   }
 
   render() {
-    const { gears, onGearEdit, onGearDetail } = this.props
+    const { gears, history } = this.props
     const { sortOrder, searchStr, itemsPerPage, currentPage } = this.state
 
     let gearsIds = Object.keys(gears);
@@ -131,12 +131,12 @@ export default class List extends Component {
               </ul>
             <Card.Footer>
               <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { () => {
-                  onGearDetail(gearId)
+                  history.push(`/geardetail/${gearId}`)
                 }
               }>Detail</Button>
               
               <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { () => { 
-                  onGearEdit(gearId) 
+                  history.push(`/gearedit/${gearId}`)
                 } 
               }>Edit</Button>
             </Card.Footer>                         
@@ -208,6 +208,9 @@ export default class List extends Component {
                 </Dropdown.Menu>
               </Dropdown>
             </Col>
+            <Col>
+              <Button variant="outline-success" onClick = { () => history.push('/newgear') }>Add a gear</Button>
+            </Col>
           </Row>
         </Container>
 
@@ -221,6 +224,4 @@ export default class List extends Component {
 
 List.propTypes = {
   gears: PropTypes.object.isRequired,
-  onGearEdit: PropTypes.func.isRequired,
-  onGearDetail: PropTypes.func.isRequired
 }

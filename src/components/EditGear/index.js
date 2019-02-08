@@ -50,13 +50,14 @@ export default class EditGear extends Component {
   }
 
   onUpdate = (e) => {
-    const { gear, onSubmit } = this.props
+    const { gear, onSubmit, history } = this.props
     const gearId = Object.keys(gear)[0]
 
     e.preventDefault()
     onSubmit({
       [gearId]: this.state
     })
+    history.push('/list')
   }
 
   render () {
