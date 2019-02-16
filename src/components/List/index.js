@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Dropdown, Container, Col, Row, Pagination, Card, CardDeck, Form, Button } from 'react-bootstrap'
+import Layout, {Header, Body} from './Layout'
 import PropTypes from 'prop-types'
 
 const sortDirection = {
@@ -171,52 +172,58 @@ export default class List extends Component {
 
     return (
       <div>
-        <h1>List of gears</h1>
-        <Container>
-          <Row>
-            <Col md = "auto">
-              <Dropdown onSelect = { this.onSortMode }>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  {
-                    sortOrder === sortDirection.SORT_ASC ? 'name+' :
-                    sortOrder === sortDirection.SORT_DESC ? 'name-' : 'sort direction'
-                  }
-                </Dropdown.Toggle>
+        <Layout>
+          <Header>
+            <h1>List of gears</h1>
+          </Header>
+          <Body>
+            <Container>
+              <Row>
+                <Col md = "auto">
+                  <Dropdown onSelect = { this.onSortMode }>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      {
+                        sortOrder === sortDirection.SORT_ASC ? 'name+' :
+                        sortOrder === sortDirection.SORT_DESC ? 'name-' : 'sort direction'
+                      }
+                    </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                  <Dropdown.Item eventKey = { sortDirection.SORT_ASC }>name+</Dropdown.Item>
-                  <Dropdown.Item eventKey = { sortDirection.SORT_DESC }>name-</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </Col>
+                    <Dropdown.Menu>
+                      <Dropdown.Item eventKey = { sortDirection.SORT_ASC }>name+</Dropdown.Item>
+                      <Dropdown.Item eventKey = { sortDirection.SORT_DESC }>name-</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Col>
 
-            <Col md = "auto">
-              <Form.Control type="text" size = "sm" placeholder="Search gear by brand"  onChange = { this.onSearchChangeHandler } value = { this.state.searchStr || '' } />
-            </Col>
+                <Col md = "auto">
+                  <Form.Control type="text" size = "sm" placeholder="Search gear by brand"  onChange = { this.onSearchChangeHandler } value = { this.state.searchStr || '' } />
+                </Col>
 
-            <Col md = "auto">
-              <Dropdown onSelect = { this.onItemsPerPage }>
-                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                  { `Items per page: ${itemsPerPage}` }
-                </Dropdown.Toggle>
+                <Col md = "auto">
+                  <Dropdown onSelect = { this.onItemsPerPage }>
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                      { `Items per page: ${itemsPerPage}` }
+                    </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                  <Dropdown.Item eventKey = "5" >5</Dropdown.Item>
-                  <Dropdown.Item eventKey = "10">10</Dropdown.Item>
-                  <Dropdown.Item eventKey = "15">15</Dropdown.Item>
-                  <Dropdown.Item eventKey = "20">20</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </Col>
-            <Col>
-              <Button variant="outline-success" onClick = { () => history.push('/newgear') }>Add a gear</Button>
-            </Col>
-          </Row>
-        </Container>
+                    <Dropdown.Menu>
+                      <Dropdown.Item eventKey = "5" >5</Dropdown.Item>
+                      <Dropdown.Item eventKey = "10">10</Dropdown.Item>
+                      <Dropdown.Item eventKey = "15">15</Dropdown.Item>
+                      <Dropdown.Item eventKey = "20">20</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Col>
+                <Col>
+                  <Button variant="outline-success" onClick = { () => history.push('/newgear') }>Add a gear</Button>
+                </Col>
+              </Row>
+            </Container>
 
-        { pagesMenu }
+            { pagesMenu }
 
-        <CardDeck style = {{ margin: '5px' }}> { list } </CardDeck>
+            <CardDeck style = {{ margin: '5px' }}> { list } </CardDeck>
+          </Body>
+        </Layout>
       </div>
     )
   }
