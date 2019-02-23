@@ -65,16 +65,16 @@ export default class EditGear extends Component {
       return (
         <Form.Group controlId = { field.name }  key = { field.name }>
           <Form.Label>{field.descr}</Form.Label>
-          <Form.Control size = "sm" type="text" placeholder= { `Enter ${ field.descr }` }  value = { this.state[field.name] || '' } onChange = { this.onInputChange } />
+          <Form.Control size="sm" type="text" placeholder={ `Enter ${ field.descr }` }  value={ this.state[field.name] || '' } onChange={ this.onInputChange } />
         </Form.Group>
       )
     })
 
     return (
-      <div style = {{ marginLeft: '15px' }}>
+      <div style={{ marginLeft: '15px' }}>
         <Form>
           { fieldList }
-          <Button size = "sm" type = "submit" variant = "primary" onClick = { this.onUpdate }>Update</Button>
+          <Button size="sm" type="submit" variant="primary" onClick={ this.onUpdate }>Update</Button>
         </Form>
       </div>
     )

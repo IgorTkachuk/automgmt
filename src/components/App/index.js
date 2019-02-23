@@ -7,19 +7,28 @@ import List from '../List'
 import AddGear from '../AddGear'
 import EditGear from '../EditGear'
 import DetailGear from '../DetailGear'
+import { genRandomId } from '../../helpers/utils'
+import GearService from '../../services/gear-service'
 
 class App extends Component {
   state = {
     gears: {}
   }
 
-  getId = () => {
-    return Math.floor(Math.random()*100000)
+  componentDidMount () {
+    const gearService = new GearService()
+
+    gearService.getAllGears()
+      .then(res => {
+        this.setState({
+          gears: res
+        })
+      })
   }
 
   newGear = (car) => {
     const { gears } = this.state
-    const gearId = this.getId()
+    const gearId = genRandomId()
 
     this.setState({
       gears: {
@@ -29,7 +38,7 @@ class App extends Component {
     })
   }
 
-  gearUpdate = (updatedGear) => {
+  updateGear = (updatedGear) => {
     const { gears } = this.state
 
     this.setState({
@@ -46,56 +55,57 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <Navbar bg = "light" expand = "lg">
-            <Navbar.Brand>Gear management system</Navbar.Brand>
-            <Navbar.Toggle aria-controls = "basic-navbar-nav" />
-            <Navbar.Collapse id = "basic-navbar-nav">
-              <Nav className = "mr-auto">
-                <Nav.Item>
-                  <Nav.Link as = "div">
-                    <Link to = "/about">About</Link>
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link as = "div">
-                    <Link to = "/list">Gear list</Link>
-                  </Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
-            <Route path = "/" exact component = { About } />
-            <Route path = "/about" component = { About } />
-            <Route path = "/list" render = {
-              (props) => <List gears = { this.state.gears } onGearEdit = { this.gearEdit } { ...props }/>
-            }/>
-            <Route path = "/newgear" render = {
-              (props) => <AddGear onSubmit = { this.newGear } { ...props }/>
-            } />
-            <Route path = "/geardetail/:gearId" render = {
-              (props) => {
-                const { gearId } = props.match.params
-                const carObj = {
-                  [gearId]: gears[gearId]
-                }
-                return (<DetailGear gear = { carObj } { ...props } />)
+          <TopMenu />
+          <Route path="/" exact component={ About } />
+          <Route path="/about" component={ About } />
+          <Route path="/list" render={
+            (props) => <List { ...props } gears={ gears } onGearEdit={ this.gearEdit } />
+          }/>
+          <Route path = "/newgear" render={
+            (props) => <AddGear { ...props } onSubmit={ this.newGear }/>
+          } />
+          <Route path = "/geardetail/:gearId" render={
+            (props) => {
+              const { gearId } = props.match.params
+              const carObj = {
+                [gearId]: gears[gearId]
               }
-            } />
-
-            <Route path = '/gearedit/:gearId' render = {
-              (props) => {
-                const { gearId } = props.match.params
-                const carObj = {
-                  [gearId]: gears[gearId]
-                }
-                return (<EditGear onSubmit = { this.gearUpdate } gear = { carObj } { ...props } />)
+              return <DetailGear { ...props } gear={ carObj } />
+            }
+          } />
+          <Route path='/gearedit/:gearId' render={
+            (props) => {
+              const { gearId } = props.match.params
+              const carObj = {
+                [gearId]: gears[gearId]
               }
-            } />
-
+              return (<EditGear { ...props } onSubmit={ this.updateGear } gear={ carObj }/>)
+            }
+          } />
         </div>
       </Router>
     )
   }
 }
+
+const TopMenu = () => 
+  <Navbar bg="light" expand="lg">
+    <Navbar.Brand>Gear management system</Navbar.Brand>
+    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+    <Navbar.Collapse id="basic-navbar-nav">
+      <Nav className="mr-auto">
+        <Nav.Item>
+          <Nav.Link as="div">
+            <Link to="/about">About</Link>
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link as="div">
+            <Link to="/list">Gear list</Link>
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
 
 export default App

@@ -43,8 +43,8 @@ const DetailGear = (props) => {
   })
 
   return (
-    <div style = {{ marginLeft: '15px' }}>
-      <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { () => history.push('/list')  }>Back to list</Button>
+    <div style={{ marginLeft: '15px' }}>
+      <Button style={{ margin: '2px' }} size="sm" variant="primary" onClick={ () => history.push('/list') }>Back to list</Button>
       <ul>
         { fieldList }
       </ul>

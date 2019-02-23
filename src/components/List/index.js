@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Dropdown, Container, Col, Row, Pagination, Card, CardDeck, Form, Button } from 'react-bootstrap'
 import Layout, {Header, Body} from './Layout'
 import PropTypes from 'prop-types'
+import { range } from 'ramda'
 
 const sortDirection = {
   SORT_ASC: 'asc',
@@ -58,7 +59,7 @@ export default class List extends Component {
     currentPage: 0
   }
 
-  onSortMode = (eKey) => {
+   onSortMode = (eKey) => {
     this.setState({
       sortOrder: eKey
     })
@@ -115,13 +116,13 @@ export default class List extends Component {
       })
 
       return (
-        <Card  key = { `gear_${gearId}` } style = {{ maxWidth: '250px' }}>
+        <Card  key = { `gear_${gearId}` } style = {{ maxWidth: '250px', minWidth: '250px', marginBottom: '5px' }}>
           <Card.Body>
               <ul>
                 {   
                   fieldsForList.map((field) => {
                     const fieldDescr = gearFieldList.find((fieldDef) => {
-                        return fieldDef.name === field ? true : false
+                        return fieldDef.name === field
                     }).descr
 
                     return (
@@ -146,20 +147,12 @@ export default class List extends Component {
       )
     })
 
-    let pagesBtn = []
-    for (let i = 0; i < pagesCount; i++) {
-      let activeBtn = false;
-      if (currentPage === i) {
-        activeBtn = true;
-      }
-
-      pagesBtn.push(
-        <Pagination.Item key = { `page_btn_${i}` } active = {activeBtn} onClick = { () => this.onPagesBtnClick(i) }>
-          { i + 1 }
-        </Pagination.Item>
-      )
-    }
-
+    const pagesBtn = range(0, pagesCount).map((i) => 
+      <Pagination.Item key={ i } active={ currentPage === i } onClick={ () => this.onPagesBtnClick(i) }>
+        { i + 1 }
+      </Pagination.Item>
+    )
+    
     const paginationStyle = {
       marginLeft: '15px'
     }
@@ -220,8 +213,8 @@ export default class List extends Component {
             </Container>
 
             { pagesMenu }
-
             <CardDeck style = {{ margin: '5px' }}> { list } </CardDeck>
+            
           </Body>
         </Layout>
       </div>

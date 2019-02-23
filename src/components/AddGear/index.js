@@ -50,9 +50,9 @@ export default class AddGear extends Component {
   render(){
     const fieldList = gearFieldList.map((field) => {
       return (
-        <Form.Group controlId = { field.name }  key = { field.name }>
+        <Form.Group controlId={ field.name }  key={ field.name }>
           <Form.Label>{field.descr}</Form.Label>
-          <Form.Control size = "sm" type="text" placeholder= { `Enter ${ field.descr }` }  value = { this.state[field.name] || '' } onChange = { this.onInputChange } />
+          <Form.Control size="sm" type="text" placeholder={ `Enter ${ field.descr }` }  value={ this.state[field.name] || '' } onChange={ this.onInputChange } />
         </Form.Group>
       )
     })
@@ -63,11 +63,11 @@ export default class AddGear extends Component {
     }
 
     return (
-      <div style = { style }>
+      <div style={ style }>
         <h1>Add new gear to list</h1>
         <Form>
           { fieldList }
-          <Button size = "sm" type = "submit" variant = "primary" onClick = { this.formSubmit }>Submit</Button>
+          <Button size="sm" type="submit" variant="primary" onClick={ this.formSubmit }>Submit</Button>
         </Form>
       </div>
     )
