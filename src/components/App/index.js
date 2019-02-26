@@ -12,20 +12,17 @@ import { genRandomId } from '../../helpers/utils'
 import GearService from '../../services/gear-service'
 
 class App extends Component {
-  state = {
-    gears: {}
-  }
+  state = {}
 
-  constructor(){
-    super()
+  componentDidMount(){
     const gearService = new GearService()
-
+    
     gearService.getAllGears()
       .then(res => {
         this.setState({
           gears: res
         })
-      })
+    })
   }
 
   newGear = (car) => {
@@ -58,7 +55,7 @@ class App extends Component {
       <Fragment>
         <Helmet 
           defaultTitle="GMS"
-          titleTemplate="AMS - %s"
+          titleTemplate="GMS - %s"
         />
         <Router>
           <div>
@@ -73,18 +70,21 @@ class App extends Component {
             <Route path = "/geardetail/:gearId" render={
               (props) => {
                 const { gearId } = props.match.params
-                console.log(this.state)
-                console.log(gearId)
-                return <DetailGear { ...props } gear={ gears[gearId] } />
+                return this.state.gears ? <DetailGear { ...props } gear={ gears[gearId] } /> : <p>Loading...</p>
+                
               }
             } />
             <Route path='/gearedit/:gearId' render={
               (props) => {
-                const { gearId } = props.match.params
-                const carObj = {
-                  [gearId]: gears[gearId]
-                }
-                return (<EditGear { ...props } onSubmit={ this.updateGear } gear={ carObj }/>)
+                if (this.state.gears) {
+                  const { gearId } = props.match.params
+                  const carObj = {
+                    [gearId]: gears[gearId]
+                  }
+                  return <EditGear { ...props } onSubmit={ this.updateGear } gear={ carObj }/>
+                } else {
+                  return <p>Loading...</p> 
+                } 
               }
             } />
           </div>
