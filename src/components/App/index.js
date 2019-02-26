@@ -16,7 +16,8 @@ class App extends Component {
     gears: {}
   }
 
-  componentDidMount () {
+  constructor(){
+    super()
     const gearService = new GearService()
 
     gearService.getAllGears()
@@ -25,8 +26,6 @@ class App extends Component {
           gears: res
         })
       })
-
-    console.log('did mount')
   }
 
   newGear = (car) => {
