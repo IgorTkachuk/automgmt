@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import Helmet from 'react-helmet'
 import { Form, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
@@ -25,7 +26,7 @@ const gearFieldList = [
   },
   {
     name: 'fuelTankVolume',
-    descr: 'Fuel tnak volume',
+    descr: 'Fuel tank volume',
   },
 ];
 
@@ -50,10 +51,13 @@ export default class AddGear extends Component {
   render(){
     const fieldList = gearFieldList.map((field) => {
       return (
-        <Form.Group controlId={ field.name }  key={ field.name }>
-          <Form.Label>{field.descr}</Form.Label>
-          <Form.Control size="sm" type="text" placeholder={ `Enter ${ field.descr }` }  value={ this.state[field.name] || '' } onChange={ this.onInputChange } />
-        </Form.Group>
+        <Fragment>
+          <Helmet title="add gear"/>
+          <Form.Group controlId={ field.name }  key={ field.name }>
+            <Form.Label>{field.descr}</Form.Label>
+            <Form.Control size="sm" type="text" placeholder={ `Enter ${ field.descr }` }  value={ this.state[field.name] || '' } onChange={ this.onInputChange } />
+          </Form.Group>
+        </Fragment>
       )
     })
 

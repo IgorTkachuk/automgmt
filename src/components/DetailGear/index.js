@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {Fragment} from 'react'
+import Helmet from 'react-helmet'
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types'
+import {Table} from 'react-bootstrap'
 
 const gearFieldList = [
   {
@@ -25,30 +27,33 @@ const gearFieldList = [
   },
   {
     name: 'fuelTankVolume',
-    descr: 'Fuel tnak volume',
+    descr: 'Fuel tank volume',
   },
 ];
 
 const DetailGear = (props) => {
   const { gear, history } = props
-  const gearId = Object.keys(gear)[0]
 
   const fieldList = gearFieldList.map((field) => {
     return (
-      <li key = { field.name }>
-        {field.descr}:
-        { gear[gearId][field.name] }
-      </li>
+      <tr key = { field.name }>
+        <td style={{ fontWeight: "bold" }}>{field.descr}</td><td>{ gear[field.name] }</td>
+      </tr>  
     )
   })
 
   return (
-    <div style={{ marginLeft: '15px' }}>
-      <Button style={{ margin: '2px' }} size="sm" variant="primary" onClick={ () => history.push('/list') }>Back to list</Button>
-      <ul>
-        { fieldList }
-      </ul>
-    </div>
+    <Fragment>
+      <Helmet title="detail gear"/>
+      <div style={{ marginLeft: '15px' }}>
+        <Button style={{ margin: '5px'}} size="sm" variant="primary" onClick={ () => history.push('/list') }>Back to list</Button>
+        <Table bordered hover striped size="sm" style = {{ maxWidth: '400px' }}>
+          <tbody>
+            { fieldList }
+          </tbody>
+        </Table>
+      </div>
+    </Fragment>
   )
 }
 

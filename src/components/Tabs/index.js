@@ -66,7 +66,7 @@ const Tab = (props) => {
   }
     
   return (
-    <li className={className} onClick={ tabOnClick } > {label} </li>
+    <li className={className} onClick={ tabOnClick }> {label} </li>
   )
 }
 

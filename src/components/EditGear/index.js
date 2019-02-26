@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import Helmet from 'react-helmet'
 import { Form, Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
@@ -25,7 +26,7 @@ const gearFieldList = [
   },
   {
     name: 'fuelTankVolume',
-    descr: 'Fuel tnak volume',
+    descr: 'Fuel tank volume',
   },
 ];
 
@@ -71,12 +72,15 @@ export default class EditGear extends Component {
     })
 
     return (
-      <div style={{ marginLeft: '15px' }}>
-        <Form>
-          { fieldList }
-          <Button size="sm" type="submit" variant="primary" onClick={ this.onUpdate }>Update</Button>
-        </Form>
-      </div>
+      <Fragment>
+        <Helmet title="edit gear" />
+        <div style={{ marginLeft: '15px' }}>
+          <Form>
+            { fieldList }
+            <Button size="sm" type="submit" variant="primary" onClick={ this.onUpdate }>Update</Button>
+          </Form>
+        </div>
+      </Fragment>
     )
   }
 }

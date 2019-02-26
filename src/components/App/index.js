@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import Helmet from 'react-helmet'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -24,6 +25,8 @@ class App extends Component {
           gears: res
         })
       })
+
+    console.log('did mount')
   }
 
   newGear = (car) => {
@@ -53,50 +56,54 @@ class App extends Component {
     const { gears } = this.state
 
     return (
-      <Router>
-        <div>
-          <TopMenu />
-          <Route path="/" exact component={ About } />
-          <Route path="/about" component={ About } />
-          <Route path="/list" render={
-            (props) => <List { ...props } gears={ gears } onGearEdit={ this.gearEdit } />
-          }/>
-          <Route path = "/newgear" render={
-            (props) => <AddGear { ...props } onSubmit={ this.newGear }/>
-          } />
-          <Route path = "/geardetail/:gearId" render={
-            (props) => {
-              const { gearId } = props.match.params
-              const carObj = {
-                [gearId]: gears[gearId]
+      <Fragment>
+        <Helmet 
+          defaultTitle="GMS"
+          titleTemplate="AMS - %s"
+        />
+        <Router>
+          <div>
+            <TopMenu />
+            <Route path="/" exact component={ About } />
+            <Route path="/list" render={
+              (props) => <List { ...props } gears={ gears } onGearEdit={ this.gearEdit } />
+            }/>
+            <Route path = "/newgear" render={
+              (props) => <AddGear { ...props } onSubmit={ this.newGear }/>
+            } />
+            <Route path = "/geardetail/:gearId" render={
+              (props) => {
+                const { gearId } = props.match.params
+                console.log(this.state)
+                console.log(gearId)
+                return <DetailGear { ...props } gear={ gears[gearId] } />
               }
-              return <DetailGear { ...props } gear={ carObj } />
-            }
-          } />
-          <Route path='/gearedit/:gearId' render={
-            (props) => {
-              const { gearId } = props.match.params
-              const carObj = {
-                [gearId]: gears[gearId]
+            } />
+            <Route path='/gearedit/:gearId' render={
+              (props) => {
+                const { gearId } = props.match.params
+                const carObj = {
+                  [gearId]: gears[gearId]
+                }
+                return (<EditGear { ...props } onSubmit={ this.updateGear } gear={ carObj }/>)
               }
-              return (<EditGear { ...props } onSubmit={ this.updateGear } gear={ carObj }/>)
-            }
-          } />
-        </div>
-      </Router>
+            } />
+          </div>
+        </Router>
+      </Fragment>
     )
   }
 }
 
 const TopMenu = () => 
   <Navbar bg="light" expand="lg">
-    <Navbar.Brand>Gear management system</Navbar.Brand>
+    <Navbar.Brand>GMS</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="mr-auto">
         <Nav.Item>
           <Nav.Link as="div">
-            <Link to="/about">About</Link>
+            <Link to="/">About</Link>
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>

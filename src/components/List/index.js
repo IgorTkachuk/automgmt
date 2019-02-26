@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Helment from 'react-helmet'
 import { Dropdown, Container, Col, Row, Pagination, Card, CardDeck, Form, Button } from 'react-bootstrap'
 import Layout, {Header, Body} from './Layout'
 import PropTypes from 'prop-types'
@@ -37,7 +38,7 @@ const gearFieldList = [
   },
   {
     name: 'fuelTankVolume',
-    descr: 'Fuel tnak volume',
+    descr: 'Fuel tank volume',
     extended: true
   },
 ];
@@ -116,34 +117,34 @@ export default class List extends Component {
       })
 
       return (
-        <Card  key = { `gear_${gearId}` } style = {{ maxWidth: '250px', minWidth: '250px', marginBottom: '5px' }}>
-          <Card.Body>
-              <ul>
-                {   
-                  fieldsForList.map((field) => {
-                    const fieldDescr = gearFieldList.find((fieldDef) => {
-                        return fieldDef.name === field
-                    }).descr
+          <Card  key = { `gear_${gearId}` } style = {{ maxWidth: '250px', minWidth: '250px', marginBottom: '5px' }}>
+            <Card.Body>
+                <ul>
+                  {   
+                    fieldsForList.map((field) => {
+                      const fieldDescr = gearFieldList.find((fieldDef) => {
+                          return fieldDef.name === field
+                      }).descr
 
-                    return (
-                      <li key = { `${gearId}_${field}` }>{ fieldDescr }: { gears[gearId][field] }</li>
-                    )
-                  })
-                }
-              </ul>
-            <Card.Footer>
-              <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { () => {
-                  history.push(`/geardetail/${gearId}`)
-                }
-              }>Detail</Button>
-              
-              <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { () => { 
-                  history.push(`/gearedit/${gearId}`)
-                } 
-              }>Edit</Button>
-            </Card.Footer>                         
-          </Card.Body>
-        </Card>
+                      return (
+                        <li key = { `${gearId}_${field}` }>{ fieldDescr }: { gears[gearId][field] }</li>
+                      )
+                    })
+                  }
+                </ul>
+              <Card.Footer>
+                <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { () => {
+                    history.push(`/geardetail/${gearId}`)
+                  }
+                }>Detail</Button>
+                
+                <Button style = {{ margin: '2px' }} size = "sm" variant = "primary" onClick = { () => { 
+                    history.push(`/gearedit/${gearId}`)
+                  } 
+                }>Edit</Button>
+              </Card.Footer>                         
+            </Card.Body>
+          </Card>
       )
     })
 
@@ -165,6 +166,7 @@ export default class List extends Component {
 
     return (
       <div>
+        <Helment title="gear list" />
         <Layout>
           <Header>
             <h1>List of gears</h1>
